@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { TouchableOpacity, StyleSheet, View } from 'react-native'
+import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import { Text } from 'react-native-paper'
 
 import Background from '../components/Background'
@@ -8,18 +8,28 @@ import Header from '../components/Header'
 import Button from '../components/Button'
 import InputText from '../components/InputText'
 import BackButton from '../components/BackButton'
+
 import { theme } from '../core/theme'
 
-export default function LoginScreen({ navigation }) {
+export default function RegisterScreen({ navigation }) {
+  const [name, setName] = useState({ value: '', error: '' })
   const [email, setEmail] = useState({ value: '', error: '' })
   const [password, setPassword] = useState({ value: '', error: '' })
 
 
   return (
     <Background>
-      <BackButton goBack={() => console.log('Go Back')} />
+      <BackButton goBack={() => console.log('Pressed')} />
       <Logo />
-      <Header>Welcome back.</Header>
+      <Header>Create Account</Header>
+      <InputText
+        label="Name"
+        returnKeyType="next"
+        value={name.value}
+        onChangeText={(text) => setName({ value: text, error: '' })}
+        error={!!name.error}
+        errorText={name.error}
+      />
       <InputText
         label="Email"
         returnKeyType="next"
@@ -41,20 +51,17 @@ export default function LoginScreen({ navigation }) {
         errorText={password.error}
         secureTextEntry
       />
-      <View style={styles.forgotPassword}>
-        <TouchableOpacity
-          onPress={() => console.log('Pressed')}
-        >
-          <Text style={styles.forgot}>Forgot your password?</Text>
-        </TouchableOpacity>
-      </View>
-      <Button mode="contained" onPress={() => console.log('Pressed')}>
-        Login
+      <Button
+        mode="contained"
+        onPress={() => console.log('Pressed')}
+        style={{ marginTop: 24 }}
+      >
+        Sign Up
       </Button>
       <View style={styles.row}>
-        <Text>Don’t have an account? </Text>
+        <Text>Already have an account? </Text>
         <TouchableOpacity onPress={() => console.log('Pressed')}>
-          <Text style={styles.link}>Sign up</Text>
+          <Text style={styles.link}>Login</Text>
         </TouchableOpacity>
       </View>
     </Background>
@@ -62,18 +69,9 @@ export default function LoginScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  forgotPassword: {
-    width: '100%',
-    alignItems: 'flex-end',
-    marginBottom: 24,
-  },
   row: {
     flexDirection: 'row',
     marginTop: 4,
-  },
-  forgot: {
-    fontSize: 13,
-    color: theme.colors.secondary,
   },
   link: {
     fontWeight: 'bold',

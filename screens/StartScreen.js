@@ -3,7 +3,7 @@ import React from 'react';
 import Background from '../components/Background';
 import Header from '../components/Header';
 import Logo from '../components/Logo';
-import Paragraph from '../components/Paragraphs';
+import Paragraph from '../components/Paragraph';
 import Button from '../components/Button';
 
 const StartScreen = () => {
