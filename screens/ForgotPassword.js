@@ -12,7 +12,7 @@ export default function ForgotPassword({navigation}) {
 
   return (
     <Background>
-      <BackButton goBack={() => {}} />
+      <BackButton goBack={() => navigation.goBack()} />
       <Logo />
       <Header>Restore Password</Header>
       <InputText

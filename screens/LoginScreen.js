@@ -1,64 +1,121 @@
-import React, { useState } from 'react'
-import { TouchableOpacity, StyleSheet, View } from 'react-native'
-import { Text } from 'react-native-paper'
+import React, {useEffect} from 'react';
+import {Formik} from 'formik';
+import * as Yup from 'yup';
 
-import Background from '../components/Background'
-import Logo from '../components/Logo'
-import Header from '../components/Header'
-import Button from '../components/Button'
-import InputText from '../components/InputText'
-import BackButton from '../components/BackButton'
-import { theme } from '../core/theme'
+import {
+  TouchableOpacity,
+  StyleSheet,
+  View,
+  ActivityIndicator,
+} from 'react-native';
+import {Text} from 'react-native-paper';
 
-export default function LoginScreen({ navigation }) {
-  const [email, setEmail] = useState({ value: '', error: '' })
-  const [password, setPassword] = useState({ value: '', error: '' })
+import Background from '../components/Background';
+import Logo from '../components/Logo';
+import Header from '../components/Header';
+import Button from '../components/Button';
+import InputText from '../components/InputText';
+import BackButton from '../components/BackButton';
+import {theme} from '../core/theme';
 
+// redux
+import {useSelector, useDispatch} from 'react-redux';
+import {login} from '../actions/userAction';
+
+export default function LoginScreen({navigation}) {
+  const dispatch = useDispatch();
+  const userLogin = useSelector(state => state.userLogin);
+  const {loading, error: loginError, userInfo} = userLogin;
+
+  useEffect(() => {
+    if (userInfo) {
+      console.log(userInfo);
+    }
+  }, [userInfo]);
 
   return (
     <Background>
-      <BackButton goBack={() => navigation.navigate('Start')} />
+      <BackButton goBack={() => navigation.goBack()} />
       <Logo />
       <Header>Welcome back.</Header>
-      <InputText
-        label="Email"
-        returnKeyType="next"
-        value={email.value}
-        onChangeText={(text) => setEmail({ value: text, error: '' })}
-        error={!!email.error}
-        errorText={email.error}
-        autoCapitalize="none"
-        autoCompleteType="email"
-        textContentType="emailAddress"
-        keyboardType="email-address"
-      />
-      <InputText
-        label="Password"
-        returnKeyType="done"
-        value={password.value}
-        onChangeText={(text) => setPassword({ value: text, error: '' })}
-        error={!!password.error}
-        errorText={password.error}
-        secureTextEntry
-      />
-      <View style={styles.forgotPassword}>
-        <TouchableOpacity
-          onPress={() => console.log('Pressed')}
-        >
-          <Text style={styles.forgot}>Forgot your password?</Text>
-        </TouchableOpacity>
-      </View>
-      <Button mode="contained" onPress={() => console.log('Pressed')}>
-        Login
-      </Button>
+      <Formik
+        initialValues={{
+          email: '',
+          password: '',
+        }}
+        validationSchema={Yup.object().shape({
+          email: Yup.string()
+            .email('Invalid email address')
+            .required('Required'),
+          password: Yup.string()
+            .min(8, 'Must be more than 8 characters')
+            .required('Required'),
+        })}
+        onSubmit={values => dispatch(login(values.email, values.password))}>
+        {({
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          values,
+          touched,
+          errors,
+        }) => (
+          <>
+            <InputText
+              label="Email"
+              returnKeyType="next"
+              value={values.email}
+              onChangeText={handleChange('email')}
+              onBlur={handleBlur('email')}
+              touched={touched.email}
+              error={errors.email}
+              errorText={errors.email}
+              autoCapitalize="none"
+              autoCompleteType="email"
+              textContentType="emailAddress"
+              keyboardType="email-address"
+            />
+            <InputText
+              label="Password"
+              returnKeyType="done"
+              value={values.password}
+              onChangeText={handleChange('password')}
+              onBlur={handleBlur('password')}
+              touched={touched.password}
+              error={errors.password}
+              errorText={errors.password}
+              secureTextEntry
+            />
+            <View style={styles.forgotPassword}>
+              <TouchableOpacity onPress={() => navigation.navigate('Reset')}>
+                <Text style={styles.forgot}>Forgot your password?</Text>
+              </TouchableOpacity>
+            </View>
+            <Button mode="contained" onPress={handleSubmit}>
+              {loading ? (
+                <ActivityIndicator size="small" color="#fff" />
+              ) : (
+                'Login'
+              )}
+            </Button>
+
+            <Text>OR</Text>
+
+            <Button mode="google" color="#EF4444" onPress={() => {}}>
+              Login with google
+            </Button>
+          </>
+        )}
+      </Formik>
+
       <View style={styles.row}>
         <Text>Don’t have an account? </Text>
-        <TouchableOpacity onPress={() => console.log('Pressed')}>
+        <TouchableOpacity onPress={() => navigation.navigate('Register')}>
           <Text style={styles.link}>Sign up</Text>
         </TouchableOpacity>
       </View>
     </Background>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -79,4 +136,4 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: theme.colors.primary,
   },
-})
+});

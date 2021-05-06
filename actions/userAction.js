@@ -36,7 +36,7 @@ export const login = (email, password) => async dispatch => {
     });
 
     // persist user details
-    await AsyncStorage.setItem('userInfo', JSON.stringify(data));
+    await AsyncStorage.setItem('@userInfo', JSON.stringify(data));
   } catch (error) {
     // catch and send back the error
     dispatch({
