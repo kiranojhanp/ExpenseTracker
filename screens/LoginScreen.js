@@ -17,7 +17,7 @@ export default function LoginScreen({ navigation }) {
 
   return (
     <Background>
-      <BackButton goBack={() => console.log('Go Back')} />
+      <BackButton goBack={() => navigation.navigate('Start')} />
       <Logo />
       <Header>Welcome back.</Header>
       <InputText

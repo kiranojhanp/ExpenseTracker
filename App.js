@@ -1,13 +1,31 @@
 import React from 'react';
 
-// import StartScreen from "./screens/StartScreen"
-// import LoginScreen from "./screens/LoginScreen"
-// import RegisterScreen from "./screens/RegisterScreen"
-import Dashboard from "./screens/Dashboard"
+import 'react-native-gesture-handler';
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
+
+import StartScreen from './screens/StartScreen';
+import LoginScreen from './screens/LoginScreen';
+import RegisterScreen from './screens/RegisterScreen';
+import ForgotPassword from './screens/ForgotPassword';
+import Dashboard from './screens/Dashboard';
+
+const Stack = createStackNavigator();
 
 const App = () => {
   return (
-    <Dashboard />
+    <NavigationContainer>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+        }}>
+        <Stack.Screen name="Start" component={StartScreen} />
+        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Register" component={RegisterScreen} />
+        <Stack.Screen name="Reset" component={ForgotPassword} />
+        <Stack.Screen name="Dashboard" component={Dashboard} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 

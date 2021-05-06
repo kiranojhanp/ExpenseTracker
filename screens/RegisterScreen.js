@@ -19,7 +19,7 @@ export default function RegisterScreen({ navigation }) {
 
   return (
     <Background>
-      <BackButton goBack={() => console.log('Pressed')} />
+      <BackButton goBack={() => navigation.navigate('Start')} />
       <Logo />
       <Header>Create Account</Header>
       <InputText

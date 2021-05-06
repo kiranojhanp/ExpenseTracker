@@ -6,16 +6,16 @@ import Logo from '../components/Logo';
 import Paragraph from '../components/Paragraph';
 import Button from '../components/Button';
 
-const StartScreen = () => {
+const StartScreen = ({navigation}) => {
   return (
     <Background>
       <Logo />
       <Header>Expense Tracker</Header>
       <Paragraph>The easiest way to track your expenses records.</Paragraph>
-      <Button mode="contained" onPress={() => {}}>
+      <Button mode="contained" onPress={() => navigation.navigate('Login')}>
         Login
       </Button>
-      <Button mode="outlined" onPress={() => {}}>
+      <Button mode="outlined" onPress={() => navigation.navigate('Register')}>
         Sign Up
       </Button>
     </Background>
