@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, createRef} from 'react';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 
@@ -35,9 +35,6 @@ export default function LoginScreen({navigation}) {
 
   return (
     <Background>
-      <BackButton goBack={() => navigation.goBack()} />
-      <Logo />
-      <Header>Welcome back.</Header>
       <Formik
         initialValues={{
           email: '',
@@ -61,6 +58,10 @@ export default function LoginScreen({navigation}) {
           errors,
         }) => (
           <>
+            <BackButton goBack={() => navigation.goBack()} />
+            <Logo />
+            <Header>Welcome back.</Header>
+
             <InputText
               label="Email"
               returnKeyType="next"
@@ -74,6 +75,7 @@ export default function LoginScreen({navigation}) {
               autoCompleteType="email"
               textContentType="emailAddress"
               keyboardType="email-address"
+              
             />
             <InputText
               label="Password"
@@ -104,16 +106,15 @@ export default function LoginScreen({navigation}) {
             <Button mode="google" color="#EF4444" onPress={() => {}}>
               Login with google
             </Button>
+            <View style={styles.row}>
+              <Text>Don’t have an account? </Text>
+              <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+                <Text style={styles.link}>Sign up</Text>
+              </TouchableOpacity>
+            </View>
           </>
         )}
       </Formik>
-
-      <View style={styles.row}>
-        <Text>Don’t have an account? </Text>
-        <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-          <Text style={styles.link}>Sign up</Text>
-        </TouchableOpacity>
-      </View>
     </Background>
   );
 }

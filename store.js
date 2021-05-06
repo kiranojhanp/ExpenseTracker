@@ -9,8 +9,14 @@ import thunk from 'redux-thunk';
 const middleware = [thunk];
 
 // get persisted user details
-const userInfoFromStorage = AsyncStorage.getItem('@userInfo')
-  ? AsyncStorage.getItem('@userInfo')
+const retrieveData = async () => {
+  const value = await AsyncStorage.getItem("@token");
+  return JSON.parse(value)
+}
+var userData = retrieveData();
+
+const userInfoFromStorage = userData
+  ? userData
   : null;
 
 const initialState = {
