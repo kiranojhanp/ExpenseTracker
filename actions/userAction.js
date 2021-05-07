@@ -10,6 +10,27 @@ import {
   USER_REGISTER_FAIL,
 } from '../constants/userConstants';
 
+// remove all persisted data || logout
+const clearStorage = async () => {
+  try {
+    await AsyncStorage.clear()
+    alert('Storage successfully cleared!')
+  } catch (e) {
+    console.log(e);
+  }
+}
+
+// persist the tokens
+const storeData = async value => {
+  try {
+    const jsonValue = JSON.stringify(value);
+    await AsyncStorage.setItem('@token', jsonValue);
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+
 export const login = (email, password) => async dispatch => {
   try {
     // request action
@@ -39,7 +60,7 @@ export const login = (email, password) => async dispatch => {
     });
 
     // persist user details
-    await AsyncStorage.setItem('@token', JSON.stringify(data));
+    await storeData(data);
   } catch (error) {
     // catch and send back the error
     dispatch({
@@ -101,6 +122,6 @@ export const register = (name, email, password) => async dispatch => {
 };
 
 export const logout = () => dispatch => {
-  localStorage.removeItem('userInfo');
+  clearStorage();
   dispatch({type: USER_LOGOUT});
 };

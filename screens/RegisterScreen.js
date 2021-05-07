@@ -30,7 +30,7 @@ export default function RegisterScreen({navigation}) {
 
   useEffect(() => {
     if (userInfo) {
-      console.log(userInfo);
+      console.log(userInfo + 'Hi');
     }
   }, [userInfo]);
 
@@ -73,8 +73,7 @@ export default function RegisterScreen({navigation}) {
               value={values.name}
               onChangeText={handleChange('name')}
               onBlur={handleBlur('name')}
-              touched={touched.name}
-              error={errors.name}
+              error={errors.name && touched.name}
               errorText={errors.name}
               autoCapitalize="none"
             />
@@ -84,8 +83,7 @@ export default function RegisterScreen({navigation}) {
               value={values.email}
               onChangeText={handleChange('email')}
               onBlur={handleBlur('email')}
-              touched={touched.email}
-              error={errors.email}
+              error={errors.email && touched.email}
               errorText={errors.email}
               autoCapitalize="none"
               autoCompleteType="email"
@@ -98,8 +96,7 @@ export default function RegisterScreen({navigation}) {
               value={values.password}
               onChangeText={handleChange('password')}
               onBlur={handleBlur('password')}
-              touched={touched.password}
-              error={errors.password}
+              error={errors.password && touched.password}
               errorText={errors.password}
               secureTextEntry
             />

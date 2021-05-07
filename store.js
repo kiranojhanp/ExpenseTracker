@@ -10,14 +10,17 @@ const middleware = [thunk];
 
 // get persisted user details
 const retrieveData = async () => {
-  const value = await AsyncStorage.getItem("@token");
-  return JSON.parse(value)
-}
+  try {
+    const jsonValue = await AsyncStorage.getItem('@token');
+    return jsonValue != null ? JSON.parse(jsonValue) : null;
+  } catch (e) {
+    console.log(e);
+  }
+};
+
 var userData = retrieveData();
 
-const userInfoFromStorage = userData
-  ? userData
-  : null;
+const userInfoFromStorage = userData ? userData : null;
 
 const initialState = {
   userLogin: {userInfo: userInfoFromStorage},
