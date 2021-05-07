@@ -1,5 +1,4 @@
 import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   USER_LOGIN_REQUEST,
   USER_LOGIN_SUCCESS,
@@ -9,27 +8,6 @@ import {
   USER_REGISTER_SUCCESS,
   USER_REGISTER_FAIL,
 } from '../constants/userConstants';
-
-// remove all persisted data || logout
-const clearStorage = async () => {
-  try {
-    await AsyncStorage.clear()
-    alert('Storage successfully cleared!')
-  } catch (e) {
-    console.log(e);
-  }
-}
-
-// persist the tokens
-const storeData = async value => {
-  try {
-    const jsonValue = JSON.stringify(value);
-    await AsyncStorage.setItem('@token', jsonValue);
-  } catch (e) {
-    console.log(e);
-  }
-};
-
 
 export const login = (email, password) => async dispatch => {
   try {
@@ -58,9 +36,6 @@ export const login = (email, password) => async dispatch => {
       type: USER_LOGIN_SUCCESS,
       payload: data,
     });
-
-    // persist user details
-    await storeData(data);
   } catch (error) {
     // catch and send back the error
     dispatch({
@@ -106,9 +81,6 @@ export const register = (name, email, password) => async dispatch => {
       type: USER_LOGIN_SUCCESS,
       payload: data,
     });
-
-    // persist user details
-    await AsyncStorage.setItem('@token', JSON.stringify(data));
   } catch (error) {
     // catch error
     dispatch({

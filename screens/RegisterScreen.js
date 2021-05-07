@@ -30,7 +30,7 @@ export default function RegisterScreen({navigation}) {
 
   useEffect(() => {
     if (userInfo) {
-      console.log(userInfo + 'Hi');
+      console.log(userInfo);
     }
   }, [userInfo]);
 
@@ -108,12 +108,9 @@ export default function RegisterScreen({navigation}) {
                 'Sign Up'
               )}
             </Button>
-
-            <Button
-              mode="contained"
-              onPress={handleSubmit}
-              style={{marginTop: 24}}>
-              Sign Up
+            <Text>OR</Text>
+            <Button mode="google" color="#EF4444" onPress={() => {}}>
+              Signup with google
             </Button>
           </>
         )}

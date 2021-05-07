@@ -2,34 +2,26 @@ import {createStore, applyMiddleware} from 'redux';
 import {composeWithDevTools} from 'redux-devtools-extension';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {persistStore, persistReducer} from 'redux-persist';
 
 import rootReducer from './reducers/index';
 
 import thunk from 'redux-thunk';
 const middleware = [thunk];
 
-// get persisted user details
-const retrieveData = async () => {
-  try {
-    const jsonValue = await AsyncStorage.getItem('@token');
-    return jsonValue != null ? JSON.parse(jsonValue) : null;
-  } catch (e) {
-    console.log(e);
-  }
+// for redux persist
+const persistConfig = {
+  key: 'persistedReducer',
+  storage: AsyncStorage,
 };
 
-var userData = retrieveData();
-
-const userInfoFromStorage = userData ? userData : null;
-
-const initialState = {
-  userLogin: {userInfo: userInfoFromStorage},
-};
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const store = createStore(
-  rootReducer,
-  initialState,
+  persistedReducer,
   composeWithDevTools(applyMiddleware(...middleware)),
 );
 
-export default store;
+let persistor = persistStore(store);
+
+export {store, persistor};
