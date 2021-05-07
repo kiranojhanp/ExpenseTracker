@@ -94,6 +94,5 @@ export const register = (name, email, password) => async dispatch => {
 };
 
 export const logout = () => dispatch => {
-  clearStorage();
   dispatch({type: USER_LOGOUT});
 };

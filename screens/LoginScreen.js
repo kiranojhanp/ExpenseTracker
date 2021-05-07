@@ -1,4 +1,4 @@
-import React, {useEffect, createRef} from 'react';
+import React, {useEffect} from 'react';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 
@@ -74,7 +74,6 @@ export default function LoginScreen({navigation}) {
               autoCompleteType="email"
               textContentType="emailAddress"
               keyboardType="email-address"
-              
             />
             <InputText
               label="Password"
