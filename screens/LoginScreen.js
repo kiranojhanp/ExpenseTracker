@@ -2,6 +2,19 @@ import React, {useEffect} from 'react';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 
+import {WEB_CLIENT_ID} from '../CONSTANTS';
+
+import {
+  GoogleSignin,
+  GoogleSigninButton,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
+
+GoogleSignin.configure({
+  webClientId: WEB_CLIENT_ID,
+  offlineAccess: true,
+});
+
 import {
   TouchableOpacity,
   StyleSheet,
@@ -26,6 +39,16 @@ export default function LoginScreen({navigation}) {
   const dispatch = useDispatch();
   const userLogin = useSelector(state => state.userLogin);
   const {loading, error: loginError, userInfo} = userLogin;
+
+  const _signin = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      console.log(userInfo);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     if (userInfo) {
@@ -100,9 +123,17 @@ export default function LoginScreen({navigation}) {
 
             <Text>OR</Text>
 
-            <Button mode="google" color="#EF4444" onPress={() => {}}>
+            <GoogleSigninButton
+              style={{width: 312, height: 48}}
+              size={GoogleSigninButton.Size.Wide}
+              color={GoogleSigninButton.Color.Dark}
+              onPress={_signin}
+              disabled={false}
+            />
+
+            {/* <Button mode="google" color="#EF4444" onPress={() => {}}>
               Login with google
-            </Button>
+            </Button> */}
             <View style={styles.row}>
               <Text>Don’t have an account? </Text>
               <TouchableOpacity onPress={() => navigation.navigate('Register')}>
