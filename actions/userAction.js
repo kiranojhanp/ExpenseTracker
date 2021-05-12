@@ -7,7 +7,46 @@ import {
   USER_REGISTER_REQUEST,
   USER_REGISTER_SUCCESS,
   USER_REGISTER_FAIL,
+  GOOGLE_USER_LOGIN_REQUEST,
+  GOOGLE_USER_LOGIN_SUCCESS,
+  GOOGLE_USER_LOGIN_FAIL,
+  GOOGLE_USER_LOGOUT,
 } from '../constants/userConstants';
+
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+
+export const googleLogin = idToken => async dispatch => {
+  try {
+    // request action
+    dispatch({type: GOOGLE_USER_LOGIN_REQUEST});
+
+    // set content type
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+
+    // send post request
+    const {data} = await axios.post(
+      `https://still-eyrie-92675.herokuapp.com/api/auth/google`,
+      {
+        token: idToken,
+      },
+    );
+
+    // send back user data
+    dispatch({
+      type: GOOGLE_USER_LOGIN_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: GOOGLE_USER_LOGIN_FAIL,
+      payload: error,
+    });
+  }
+};
 
 export const login = (email, password) => async dispatch => {
   try {
@@ -91,6 +130,12 @@ export const register = (name, email, password) => async dispatch => {
           : error.message,
     });
   }
+};
+
+export const googleLogout = () => async dispatch => {
+  await GoogleSignin.revokeAccess();
+  await GoogleSignin.signOut();
+  dispatch({type: GOOGLE_USER_LOGOUT});
 };
 
 export const logout = () => dispatch => {

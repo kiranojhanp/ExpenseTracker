@@ -1,7 +1,12 @@
-import {userLoginReducer, userRegisterReducer} from './userReducer';
+import {
+  userGoogleLoginReducer,
+  userLoginReducer,
+  userRegisterReducer,
+} from './userReducer';
 import {combineReducers} from 'redux';
 
 const rootReducer = combineReducers({
+  userGoogleLogin: userGoogleLoginReducer,
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,
 });

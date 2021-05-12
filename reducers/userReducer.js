@@ -6,7 +6,26 @@ import {
   USER_REGISTER_REQUEST,
   USER_REGISTER_SUCCESS,
   USER_REGISTER_FAIL,
+  GOOGLE_USER_LOGIN_REQUEST,
+  GOOGLE_USER_LOGIN_SUCCESS,
+  GOOGLE_USER_LOGIN_FAIL,
+  GOOGLE_USER_LOGOUT,
 } from '../constants/userConstants';
+
+export const userGoogleLoginReducer = (state = {}, action) => {
+  switch (action.type) {
+    case GOOGLE_USER_LOGIN_REQUEST:
+      return {loading: true};
+    case GOOGLE_USER_LOGIN_SUCCESS:
+      return {loading: false, userInfo: action.payload};
+    case GOOGLE_USER_LOGIN_FAIL:
+      return {loading: false, error: action.payload};
+    case GOOGLE_USER_LOGOUT:
+      return {};
+    default:
+      return state;
+  }
+};
 
 export const userLoginReducer = (state = {}, action) => {
   switch (action.type) {

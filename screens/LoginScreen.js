@@ -33,28 +33,24 @@ import {theme} from '../core/theme';
 
 // redux
 import {useSelector, useDispatch} from 'react-redux';
-import {login} from '../actions/userAction';
+import {googleLogin} from '../actions/userAction';
 
 export default function LoginScreen({navigation}) {
   const dispatch = useDispatch();
-  const userLogin = useSelector(state => state.userLogin);
-  const {loading, error: loginError, userInfo} = userLogin;
+  const userGoogleLogin = useSelector(state => state.userGoogleLogin);
+  const {loading, error} = userGoogleLogin;
 
   const _signin = async () => {
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
-      console.log(userInfo);
+      const {idToken} = userInfo;
+
+      dispatch(googleLogin(idToken));
     } catch (error) {
       console.log(error);
     }
   };
-
-  useEffect(() => {
-    if (userInfo) {
-      console.log(userInfo);
-    }
-  }, [userInfo]);
 
   return (
     <Background>
@@ -71,7 +67,7 @@ export default function LoginScreen({navigation}) {
             .min(8, 'Must be more than 8 characters')
             .required('Required'),
         })}
-        onSubmit={values => dispatch(login(values.email, values.password))}>
+        onSubmit={values => console.log(values)}>
         {({
           handleChange,
           handleBlur,
@@ -83,6 +79,7 @@ export default function LoginScreen({navigation}) {
           <>
             <BackButton goBack={() => navigation.goBack()} />
             <Logo />
+            {error && <Header>Some error occured</Header>}
             <Header>Welcome back.</Header>
 
             <InputText
@@ -124,16 +121,13 @@ export default function LoginScreen({navigation}) {
             <Text>OR</Text>
 
             <GoogleSigninButton
-              style={{width: 312, height: 48}}
+              style={{width: 312, height: 58}}
               size={GoogleSigninButton.Size.Wide}
               color={GoogleSigninButton.Color.Dark}
               onPress={_signin}
-              disabled={false}
+              disabled={loading}
             />
 
-            {/* <Button mode="google" color="#EF4444" onPress={() => {}}>
-              Login with google
-            </Button> */}
             <View style={styles.row}>
               <Text>Don’t have an account? </Text>
               <TouchableOpacity onPress={() => navigation.navigate('Register')}>
