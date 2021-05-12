@@ -19,7 +19,6 @@ const AuthScreens = () => {
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Register" component={RegisterScreen} />
       <Stack.Screen name="Reset" component={ForgotPassword} />
-      <Stack.Screen name="Dashboard" component={Dashboard} />
     </Stack.Navigator>
   );
 };
