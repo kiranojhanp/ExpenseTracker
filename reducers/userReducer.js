@@ -21,7 +21,7 @@ export const userGoogleLoginReducer = (state = {}, action) => {
     case GOOGLE_USER_LOGIN_FAIL:
       return {loading: false, error: action.payload};
     case GOOGLE_USER_LOGOUT:
-      return {loading: false, userInfo: null};
+      return {};
     default:
       return state;
   }

@@ -1,12 +1,13 @@
 import React from 'react';
 import {Image, StyleSheet} from 'react-native';
 
-export default function Logo() {
+export default function Logo({logo}) {
   return (
     <Image
       source={{
-        uri:
-          'https://www.pureprocesstechnology.com/wp-content/uploads/2019/02/cost-effective-icon.png',
+        uri: logo
+          ? logo
+          : 'https://www.pureprocesstechnology.com/wp-content/uploads/2019/02/cost-effective-icon.png',
       }}
       style={styles.image}
     />

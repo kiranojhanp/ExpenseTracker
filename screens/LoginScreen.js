@@ -54,89 +54,96 @@ export default function LoginScreen({navigation}) {
 
   return (
     <Background>
-      <Formik
-        initialValues={{
-          email: '',
-          password: '',
-        }}
-        validationSchema={Yup.object().shape({
-          email: Yup.string()
-            .email('Invalid email address')
-            .required('Required'),
-          password: Yup.string()
-            .min(8, 'Must be more than 8 characters')
-            .required('Required'),
-        })}
-        onSubmit={values => console.log(values)}>
-        {({
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          values,
-          touched,
-          errors,
-        }) => (
-          <>
-            <BackButton goBack={() => navigation.goBack()} />
-            <Logo />
-            {error && <Header>Some error occured</Header>}
-            <Header>Welcome back.</Header>
+      {loading && (
+        <ActivityIndicator size="large" color={theme.colors.primary} />
+      )}
 
-            <InputText
-              label="Email"
-              returnKeyType="next"
-              value={values.email}
-              onChangeText={handleChange('email')}
-              onBlur={handleBlur('email')}
-              error={errors.email && touched.email}
-              errorText={errors.email}
-              autoCapitalize="none"
-              autoCompleteType="email"
-              textContentType="emailAddress"
-              keyboardType="email-address"
-            />
-            <InputText
-              label="Password"
-              returnKeyType="done"
-              value={values.password}
-              onChangeText={handleChange('password')}
-              onBlur={handleBlur('password')}
-              error={errors.password && touched.password}
-              errorText={errors.password}
-              secureTextEntry
-            />
-            <View style={styles.forgotPassword}>
-              <TouchableOpacity onPress={() => navigation.navigate('Reset')}>
-                <Text style={styles.forgot}>Forgot your password?</Text>
-              </TouchableOpacity>
-            </View>
-            <Button mode="contained" onPress={handleSubmit}>
-              {loading ? (
-                <ActivityIndicator size="small" color="#fff" />
-              ) : (
-                'Login'
-              )}
-            </Button>
+      {!loading && (
+        <Formik
+          initialValues={{
+            email: '',
+            password: '',
+          }}
+          validationSchema={Yup.object().shape({
+            email: Yup.string()
+              .email('Invalid email address')
+              .required('Required'),
+            password: Yup.string()
+              .min(8, 'Must be more than 8 characters')
+              .required('Required'),
+          })}
+          onSubmit={values => console.log(values)}>
+          {({
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            values,
+            touched,
+            errors,
+          }) => (
+            <>
+              <BackButton goBack={() => navigation.goBack()} />
+              <Logo />
+              {error && <Header>Some error occured</Header>}
+              <Header>Welcome back.</Header>
 
-            <Text>OR</Text>
+              <InputText
+                label="Email"
+                returnKeyType="next"
+                value={values.email}
+                onChangeText={handleChange('email')}
+                onBlur={handleBlur('email')}
+                error={errors.email && touched.email}
+                errorText={errors.email}
+                autoCapitalize="none"
+                autoCompleteType="email"
+                textContentType="emailAddress"
+                keyboardType="email-address"
+              />
+              <InputText
+                label="Password"
+                returnKeyType="done"
+                value={values.password}
+                onChangeText={handleChange('password')}
+                onBlur={handleBlur('password')}
+                error={errors.password && touched.password}
+                errorText={errors.password}
+                secureTextEntry
+              />
+              <View style={styles.forgotPassword}>
+                <TouchableOpacity onPress={() => navigation.navigate('Reset')}>
+                  <Text style={styles.forgot}>Forgot your password?</Text>
+                </TouchableOpacity>
+              </View>
+              <Button mode="contained" onPress={handleSubmit}>
+                {loading ? (
+                  <ActivityIndicator size="small" color="#fff" />
+                ) : (
+                  'Login'
+                )}
+              </Button>
 
-            <GoogleSigninButton
-              style={{width: 312, height: 58}}
-              size={GoogleSigninButton.Size.Wide}
-              color={GoogleSigninButton.Color.Dark}
-              onPress={_signin}
-              disabled={loading}
-            />
+              <Text>OR</Text>
 
-            <View style={styles.row}>
-              <Text>Don’t have an account? </Text>
-              <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-                <Text style={styles.link}>Sign up</Text>
-              </TouchableOpacity>
-            </View>
-          </>
-        )}
-      </Formik>
+              <GoogleSigninButton
+                style={{width: 312, height: 58}}
+                size={GoogleSigninButton.Size.Wide}
+                color={GoogleSigninButton.Color.Dark}
+                onPress={_signin}
+                disabled={loading}
+              />
+
+              <View style={styles.row}>
+                <Text>Don’t have an account? </Text>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('Register')}>
+                  <Text style={styles.link}>Sign up</Text>
+                </TouchableOpacity>
+              </View>
+            </>
+          )}
+        </Formik>
+      )}
     </Background>
   );
 }

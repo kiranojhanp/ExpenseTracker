@@ -12,7 +12,7 @@ const AuthNavigator = () => {
 
   return (
     <NavigationContainer>
-      {userInfo?.token ? <DashboardScreens /> : <AuthScreens />}
+      {!userInfo ? <AuthScreens /> : <DashboardScreens />}
     </NavigationContainer>
   );
 };
